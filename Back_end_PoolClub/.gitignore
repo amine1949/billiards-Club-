@@ -1,0 +1,7 @@
+# Environment files
+node_modules/
+.env
+
+
+# Local uploads
+/public/images/
