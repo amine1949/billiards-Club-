@@ -16,8 +16,8 @@ import Navbar from "./Navbar.jsx";
 const Sidebarcomp = () => {
     return (
         <>
-            <Sidebar >
-                <SidebarHeader className="bg-blue-800 text-black">
+            <Sidebar>
+                <SidebarHeader className="bg-[#d8d8d8] text-black">
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <SidebarMenuButton size="lg" asChild>
@@ -26,21 +26,17 @@ const Sidebarcomp = () => {
                                         <Command className="size-4" />
                                     </div>
                                     <div className="grid flex-1 text-left text-sm leading-tight">
-                                        <span className="truncate font-semibold">Acme Inc</span>
-                                        <span className="truncate text-xs">Enterprise</span>
+                                        <span className="truncate font-semibold">Billiards Club</span>
                                     </div>
                                 </a>
                             </SidebarMenuButton>
                         </SidebarMenuItem>
                     </SidebarMenu>
                 </SidebarHeader>
-                <SidebarContent className="bg-blue-800">
+                <SidebarContent className="bg-[#d8d8d8]">
                     <Navbar/>
-                    {/*<NavMain items={data.navMain} />
-                    <NavProjects projects={data.projects} />
-                    <NavSecondary items={data.navSecondary} className="mt-auto" />*/}
                 </SidebarContent>
-                <SidebarFooter className="bg-blue-800">
+                <SidebarFooter className="bg-[#d8d8d8]">
                     {/*<NavUser user={data.user} />*/}
                 </SidebarFooter>
             </Sidebar>

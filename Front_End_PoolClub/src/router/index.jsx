@@ -9,7 +9,10 @@ import { NotFound } from "../pages/NotFound";
 import SignIn from "../pages/SignIn.jsx";
 import BackOffice from "../layouts/BackOffice.jsx";
 import Dashboard from "../pages/BackOfficePages/Dashboard.jsx";
-import Tournaments from "../pages/BackOfficePages/Tournaments.jsx";
+import TournamentsBackOffice from "../pages/BackOfficePages/TournamentsBackOffice.jsx";
+import  ReservationsBackOffice  from "../pages/BackOfficePages/ReservationsBackOffice.jsx";
+import  PartiesBackOffice from "../pages/BackOfficePages/PartiesBackOffice.jsx";
+import  ContactBackOffice  from "../pages/BackOfficePages/ContactBackOffice.jsx";
 
 export const router = createBrowserRouter([
     {
@@ -46,8 +49,20 @@ export const router = createBrowserRouter([
             },
             {
                 path: '/backoffice/tournament',
-                element: <Tournaments />
-            }
+                element: <TournamentsBackOffice/>
+            },
+            {
+                path: '/backoffice/reservation',
+                element: <ReservationsBackOffice/>
+            },
+            {
+                path: '/backoffice/partie',
+                element: <PartiesBackOffice />
+            },
+            {
+                path: '/backoffice/contact',
+                element: <ContactBackOffice />
+            },
         ]
     },
     {

@@ -10,5 +10,7 @@ router.put('/updateTournament/:id', upload.single('image'), tournamentController
 router.delete('/deleteTournament/:id', tournamentController.deleteTournament);
 router.get('/getTournament/:id', tournamentController.getTournament);
 
+//Reservation Routes
+
 
 module.exports = router;
