@@ -14,7 +14,7 @@ import {
     SidebarMenuSubItem,
     SidebarMenuSubButton
 } from "@/components/ui/sidebar";
-import {ChevronRight, ChartBarStacked, LayoutDashboard, User2} from "lucide-react";
+import {ChevronRight, ChartBarStacked, LayoutDashboard, User2, MessageSquare, PartyPopper, Ticket} from "lucide-react";
 import { Link } from "react-router-dom";
 
 
@@ -30,9 +30,29 @@ const itemSettingAdmin = [
 
 const navItemAdmin = [
     {
+        title: "Dashboard",
+        url: '/backoffice',
+        icon: LayoutDashboard
+    },
+    {
         title: "Tournaments",
-        url: '/Workspace/Admin/Category',
+        url: '/backoffice/tournament',
         icon: ChartBarStacked
+    },
+    {
+        title: "Reservations",
+        url: '/backoffice/reservation',
+        icon: Ticket 
+    },
+    {
+        title: "Parties",
+        url: '/backoffice/partie',
+        icon: PartyPopper 
+    },
+    {
+        title: "Contact",
+        url: '/backoffice/contact',
+        icon: MessageSquare 
     },
 
 ]
@@ -42,20 +62,11 @@ const Navbar = () => {
         <>
             <SidebarGroup>
                 {/* PlatForm Section */}
-                <SidebarGroupLabel className='text-white font-normal'>PlatForm</SidebarGroupLabel>
+                <SidebarGroupLabel className='text-[#538083] font-normal'>PlatForm</SidebarGroupLabel>
                 <SidebarMenu>
-                    <SidebarMenuItem>
-                        <SidebarMenuButton asChild size="sm" className='text-black text-[17px] mb-2'>
-                            <Link to="/backoffice">
-                                <LayoutDashboard />
-                                <span>Dashboard</span>
-                            </Link>
-                        </SidebarMenuButton>
-                    </SidebarMenuItem>
-
                     {navItemAdmin.map((item) => (
                         <SidebarMenuItem key={item.title}>
-                            <SidebarMenuButton asChild size="sm" className='text-white text-[17px] mb-2'>
+                            <SidebarMenuButton asChild size="sm" className='text-black text-[17px] mb-2 hover:bg-[#DFD9E2]'>
                                 <Link to={item.url}>
                                     <item.icon />
                                     <span>{item.title}</span>
@@ -69,19 +80,19 @@ const Navbar = () => {
             {/* Bottom-aligned Paramêtres Section */}
             <div className="mt-auto">
                 <SidebarGroup>
-                    <SidebarGroupLabel className='text-white font-normal'>Paramêtres</SidebarGroupLabel>
+                    <SidebarGroupLabel className='text-[#538083] font-normal'>Paramêtres</SidebarGroupLabel>
                     <SidebarMenu>
                         <SidebarMenuItem>
                             <Collapsible asChild defaultOpen={true}>
                                 <SidebarMenuItem>
-                                    <SidebarMenuButton className='text-white text-[17px] mb-2'>
+                                    <SidebarMenuButton className='text-black text-[17px] mb-2'>
                                         <User2 />
                                         <span>Compte</span>
                                     </SidebarMenuButton>
 
                                     <CollapsibleTrigger asChild>
                                         <SidebarMenuAction className="data-[state=open]:rotate-90">
-                                            <ChevronRight className='text-white' />
+                                            <ChevronRight className='text-black' />
                                             <span className="sr-only">Toggle</span>
                                         </SidebarMenuAction>
                                     </CollapsibleTrigger>
@@ -90,7 +101,7 @@ const Navbar = () => {
                                         <SidebarMenuSub>
                                             {itemSettingAdmin[0].items.map((item, index) => (
                                                 <SidebarMenuSubItem key={index}>
-                                                    <SidebarMenuSubButton asChild className='text-white'>
+                                                    <SidebarMenuSubButton asChild className='text-black'>
                                                         <Link to={item.url}>
                                                             <span>{item.title}</span>
                                                         </Link>
