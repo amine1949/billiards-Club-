@@ -1,6 +1,7 @@
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar"
+import { SidebarProvider } from "@/components/ui/sidebar"
 import Sidebarcomp from "../components/BackOfficeComponents/SideBarComponents/Sidebarcomp"
 import { Outlet } from "react-router-dom"
+import HeaderBackOffice from "../components/BackOfficeComponents/HeaderBackOffice"
 
 
 
@@ -9,8 +10,8 @@ const BackOffice = () => {
         <>
             <SidebarProvider className="bg-[#efefef]">
                 <Sidebarcomp/>
-                <main>
-                    <SidebarTrigger/>
+                <main className="w-full mx-2">
+                    <HeaderBackOffice/>
                     <Outlet/>
                 </main>
             </SidebarProvider>
