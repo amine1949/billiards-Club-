@@ -81,7 +81,7 @@ const FormTournament = () => {
                 <h1 className="text-lg font-medium text-[#333333]">fill out this form to add a new tournament</h1>
                 <div className="mt-4">
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
                             <div className="flex justify-between">
                                 <div className="w-1/2 space-y-2">
                                     <FormField
