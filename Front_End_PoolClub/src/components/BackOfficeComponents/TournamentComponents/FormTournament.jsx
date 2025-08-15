@@ -6,12 +6,12 @@ import { cn } from "@/lib/utils"
 
 import { Button } from "@/components/ui/button"
 import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
@@ -20,7 +20,7 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-  } from "@/components/ui/popover"
+} from "@/components/ui/popover"
 import { format } from "date-fns"
 import { CalendarIcon } from "lucide-react"
 
@@ -28,32 +28,32 @@ import { CalendarIcon } from "lucide-react"
 
 const formSchema = z.object({
     nameTournament: z.string().min(2, {
-      message: "Name Tournament must be at least 2 characters.",
+        message: "Name Tournament must be at least 2 characters.",
     }),
     titleTournament: z.string().min(2, {
-      message: "Name Tournament must be at least 2 characters.",
+        message: "Name Tournament must be at least 2 characters.",
     }),
     priceTournament: z.string().min(3, {
-      message: "Prcie Tournament is required.",
+        message: "Prcie Tournament is required.",
     }),
     maxPlayers: z.string().max(2).min(1, {
         message: "Max Players is required.",
     }),
     descriptionTournament: z
-    .string()
-    .min(10, {
-      message: "description must be at least 10 characters.",
-    })
-    .max(160, {
-      message: "description must not be longer than 30 characters.",
-    }),
-    imageTournament : z.string(),
+        .string()
+        .min(10, {
+            message: "description must be at least 10 characters.",
+        })
+        .max(160, {
+            message: "description must not be longer than 30 characters.",
+        }),
+    imageTournament: z.string(),
     dateTournament: z.date({
         required_error: "A date of birth is required.",
-      }),
-  })
-   
-  
+    }),
+})
+
+
 
 
 const FormTournament = () => {
@@ -68,11 +68,11 @@ const FormTournament = () => {
             descriptionTournament: "",
             imageTournament: "",
         },
-      })
-     
-      function onSubmit(values) {
+    })
+
+    function onSubmit(values) {
         console.log(values)
-      }
+    }
 
 
     return (
@@ -85,45 +85,45 @@ const FormTournament = () => {
                             <div className="flex justify-between">
                                 <div className="w-1/2 space-y-2">
                                     <FormField
-                                    control={form.control}
-                                    name="nameTournament"
-                                    render={({ field }) => (
-                                        <FormItem className="w-[90%]">
-                                            <FormLabel className="font-medium text-[#333333]">Name Tournament</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Name Tournament" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                        control={form.control}
+                                        name="nameTournament"
+                                        render={({ field }) => (
+                                            <FormItem className="w-[90%]">
+                                                <FormLabel className="font-medium text-[#333333]">Name Tournament</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Name Tournament" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
                                     />
                                     <FormField
-                                    control={form.control}
-                                    name="priceTournament"
-                                    render={({ field }) => (
-                                        <FormItem className="w-[90%]">
-                                            <FormLabel className="font-medium text-[#333333]">Price Tournament</FormLabel>
-                                            <FormControl>
-                                                <Input placeholder="Price Tournament" {...field} />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
+                                        control={form.control}
+                                        name="priceTournament"
+                                        render={({ field }) => (
+                                            <FormItem className="w-[90%]">
+                                                <FormLabel className="font-medium text-[#333333]">Price Tournament</FormLabel>
+                                                <FormControl>
+                                                    <Input placeholder="Price Tournament" {...field} />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
                                     />
                                     <FormField
                                         control={form.control}
                                         name="descriptionTournament"
                                         render={({ field }) => (
                                             <FormItem>
-                                            <FormLabel>description Tournament</FormLabel>
-                                            <FormControl>
-                                                <Textarea
-                                                placeholder="Create a description for the tournament"
-                                                className="resize-none w-[90%]"
-                                                {...field}
-                                                />
-                                            </FormControl>
-                                            <FormMessage />
+                                                <FormLabel>description Tournament</FormLabel>
+                                                <FormControl>
+                                                    <Textarea
+                                                        placeholder="Create a description for the tournament"
+                                                        className="resize-none w-[90%]"
+                                                        {...field}
+                                                    />
+                                                </FormControl>
+                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />
@@ -167,45 +167,45 @@ const FormTournament = () => {
                                                 <FormMessage />
                                             </FormItem>
                                         )}
-                                    />  
+                                    />
                                     <FormField
                                         control={form.control}
                                         name="dateTournament"
                                         render={({ field }) => (
                                             <FormItem className="flex flex-col">
-                                            <FormLabel className="mt-2">Date of Tournament</FormLabel>
-                                            <Popover >
-                                                <PopoverTrigger asChild>
-                                                <FormControl>
-                                                    <Button
-                                                    variant={"outline"}
-                                                    className={cn(
-                                                        "pl-3 text-left font-normal w-[90%]",
-                                                        !field.value && "text-muted-foreground"
-                                                    )}
-                                                    >
-                                                    {field.value ? (
-                                                        format(field.value, "PPP")
-                                                    ) : (
-                                                        <span>Pick a date</span>
-                                                    )}
-                                                    <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-                                                    </Button>
-                                                </FormControl>
-                                                </PopoverTrigger>
-                                                <PopoverContent className="w-auto p-0" align="start">
-                                                <Calendar
-                                                    mode="single"
-                                                    selected={field.value}
-                                                    onSelect={field.onChange}
-                                                    disabled={(date) =>
-                                                    date < new Date()
-                                                    }
-                                                    captionLayout="dropdown"
-                                                />
-                                                </PopoverContent>
-                                            </Popover>
-                                            <FormMessage />
+                                                <FormLabel className="mt-2">Date of Tournament</FormLabel>
+                                                <Popover >
+                                                    <PopoverTrigger asChild>
+                                                        <FormControl>
+                                                            <Button
+                                                                variant={"outline"}
+                                                                className={cn(
+                                                                    "pl-3 text-left font-normal w-[90%]",
+                                                                    !field.value && "text-muted-foreground"
+                                                                )}
+                                                            >
+                                                                {field.value ? (
+                                                                    format(field.value, "PPP")
+                                                                ) : (
+                                                                    <span>Pick a date</span>
+                                                                )}
+                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                            </Button>
+                                                        </FormControl>
+                                                    </PopoverTrigger>
+                                                    <PopoverContent className="w-auto p-0" align="start">
+                                                        <Calendar
+                                                            mode="single"
+                                                            selected={field.value}
+                                                            onSelect={field.onChange}
+                                                            disabled={(date) =>
+                                                                date < new Date()
+                                                            }
+                                                            captionLayout="dropdown"
+                                                        />
+                                                    </PopoverContent>
+                                                </Popover>
+                                                <FormMessage />
                                             </FormItem>
                                         )}
                                     />
