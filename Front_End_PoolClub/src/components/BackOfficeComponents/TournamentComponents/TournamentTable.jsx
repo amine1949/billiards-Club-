@@ -87,9 +87,13 @@ const getData = async () => {
 };
 
 const formSchema = z.object({
-    username: z.string().min(2, {
-        message: "Username must be at least 2 characters.",
-    }),
+    nameTournament: z.string().optional(),
+    priceTournament: z.string().optional(),
+    descriptionTournament: z.string().optional(),
+    titleTournament: z.string().optional(),
+    maxPlayer: z.string().optional(),
+    imageTournament: z.string().optional(),
+    dateTournament: z.string().optional(),
 })
 
 
@@ -109,7 +113,13 @@ const TournamentTable = () => {
     const editTournament = useForm({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            username: "",
+            nameTournament: "",
+            priceTournament: "",
+            descriptionTournament: "",
+            titleTournament: "",
+            maxPlayer: "",
+            imageTournament: "",
+            dateTournament: ""
         },
     })
 
