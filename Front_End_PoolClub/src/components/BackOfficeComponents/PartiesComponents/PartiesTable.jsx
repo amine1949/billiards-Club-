@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
 import { flexRender, getCoreRowModel, useReactTable, getPaginationRowModel, getSortedRowModel, getFilteredRowModel } from "@tanstack/react-table";
+import { zodResolver } from "@hookform/resolvers/zod"
+import { useForm } from "react-hook-form"
+import { z } from "zod"
+import { cn } from "@/lib/utils"
 //Component Shadcn
 import {
     Table,
@@ -13,22 +17,46 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
-    DropdownMenuLabel,
+    DropdownMenuShortcut,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Button } from "@/components/ui/button"
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input"
+import {
+    Dialog,
+    DialogContent,
+    DialogDescription,
+    DialogHeader
+} from "@/components/ui/dialog"
+import {
+    Form,
+    FormControl,
+    FormField,
+    FormItem,
+    FormLabel,
+    FormMessage,
+} from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
+import { Calendar } from "@/components/ui/calendar"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import { format } from "date-fns"
 //Icons
-import { 
-    MoreHorizontal, 
-    ArrowUpDown, 
+import {
+    MoreHorizontal,
+    ArrowUpDown,
     ChevronLeft,
     ChevronRight,
     ChevronsLeft,
-    ChevronsRight
- } from "lucide-react"
+    ChevronsRight,
+    CalendarIcon
+} from "lucide-react"
+import partiePic from '../../../assets/Partie.jpg'
 
 //data
 const getData = async () => {
@@ -55,8 +83,43 @@ const getData = async () => {
     ];
 };
 
+const formSchema = z.object({
+    namePartie: z.string().optional(),
+    titlePartie: z.string().optional(),
+    descriptionPartie: z.string().optional(),
+    imagePartie: z.string().optional(),
+    datePartie: z.string().optional(),
+})
+
 
 const PartiesTable = () => {
+
+    const [currentRowData, setCurrentRowData] = useState([]);
+    const [ShowUpdateDialog, setShowUpdateDialog] = useState(false);
+    const [ShowMoreInfoDialog, setShowMoreInfoDialog] = useState(false);
+    const [data, setData] = useState([]);
+    const [sorting, setSorting] = useState([]);
+    const [columnFilters, setColumnFilters] = useState([])
+    const [columnVisibility, setColumnVisibility] = useState({})
+    const [rowSelection, setRowSelection] = useState({})
+
+
+    // 1. Define your form.
+    const editPartie = useForm({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            namePartie: "",
+            titlePartie: "",
+            descriptionPartie: "",
+            imagePartie: "",
+            datePartie: "",
+        },
+    })
+
+    // 2. Define a submit handler.
+    function onSubmit(values) {
+        console.log(values)
+    }
 
 
     //Column
@@ -122,38 +185,202 @@ const PartiesTable = () => {
         {
             id: "actions",
             cell: ({ row }) => {
-                const payment = row.original
+
+                //This for open Edit Tournament Dialog
+                const handleEdit = (rowData) => {
+                    setCurrentRowData(rowData);
+                    setShowUpdateDialog(true)
+                }
+
+                //This for More Info Tournament 
+                const handleInfo = (rowData) => {
+                    setCurrentRowData(rowData);
+                    setShowMoreInfoDialog(true);
+                }
                 return (
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                                <span className="sr-only">Open menu</span>
-                                <MoreHorizontal className="h-3 w-3" />
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                            <DropdownMenuItem
-                                onClick={() => navigator.clipboard.writeText(payment.id)}
-                            >
-                                Copy payment ID
-                            </DropdownMenuItem>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem>Update Tournament</DropdownMenuItem>
-                            <DropdownMenuItem>View Tournament Details</DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
+                    <>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-3 w-3" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                    onSelect={() => handleEdit(row.original)}>
+                                    Update Partie
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                    onSelect={() => handleInfo(row.original)}>
+                                    View Partie Details
+                                </DropdownMenuItem>
+                                <DropdownMenuSeparator />
+                                <DropdownMenuItem>
+                                    Delete
+                                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
+                                </DropdownMenuItem>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+
+
+                        {/* Update Tournament  */}
+                        <Dialog open={ShowUpdateDialog} onOpenChange={setShowUpdateDialog}>
+                            <DialogContent className='flex flex-col sm:max-w-[50%]'>
+                                <DialogHeader className='text-xl font-semibold'>
+                                    Update {currentRowData.name}
+                                </DialogHeader>
+                                <DialogDescription className='text-sm mt-[-8px]'>
+                                    Update the Partie details and save the changes
+                                </DialogDescription>
+                                <div>
+                                    <Form {...editPartie}>
+                                        <form onSubmit={editPartie.handleSubmit(onSubmit)} className="space-y-8">
+                                            <div className="flex justify-between">
+                                                <div className="w-1/2 space-y-2">
+                                                    <FormField
+                                                        control={editPartie.control}
+                                                        name="namePartie"
+                                                        render={({ field }) => (
+                                                            <FormItem className="w-[90%]">
+                                                                <FormLabel className="font-medium text-[#333333]">Name Partie</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Name Partie" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={editPartie.control}
+                                                        name="descriptionPartie"
+                                                        render={({ field }) => (
+                                                            <FormItem>
+                                                                <FormLabel>description Partie</FormLabel>
+                                                                <FormControl>
+                                                                    <Textarea
+                                                                        placeholder="Create a description for the Partie"
+                                                                        className="resize-none w-[90%]"
+                                                                        {...field}
+                                                                    />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                                <div className="w-1/2 space-y-2">
+                                                    <FormField
+                                                        control={editPartie.control}
+                                                        name="titlePartie"
+                                                        render={({ field }) => (
+                                                            <FormItem className="w-[90%]">
+                                                                <FormLabel className="font-medium text-[#333333]">Title Partie</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Title Partie" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={editPartie.control}
+                                                        name="imagePartie"
+                                                        render={({ field }) => (
+                                                            <FormItem className="w-[90%]">
+                                                                <FormLabel className="font-medium text-[#333333]">Image Partie</FormLabel>
+                                                                <FormControl>
+                                                                    <Input placeholder="Image Partie" type="file" {...field} />
+                                                                </FormControl>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                    <FormField
+                                                        control={editPartie.control}
+                                                        name="datePartie"
+                                                        render={({ field }) => (
+                                                            <FormItem className="flex flex-col">
+                                                                <FormLabel className="mt-2">Date of Partie</FormLabel>
+                                                                <Popover >
+                                                                    <PopoverTrigger asChild>
+                                                                        <FormControl>
+                                                                            <Button
+                                                                                variant={"outline"}
+                                                                                className={cn(
+                                                                                    "pl-3 text-left font-normal w-[90%]",
+                                                                                    !field.value && "text-muted-foreground"
+                                                                                )}
+                                                                            >
+                                                                                {field.value ? (
+                                                                                    format(field.value, "PPP")
+                                                                                ) : (
+                                                                                    <span>Pick a date</span>
+                                                                                )}
+                                                                                <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                                                                            </Button>
+                                                                        </FormControl>
+                                                                    </PopoverTrigger>
+                                                                    <PopoverContent className="w-auto p-0" align="start">
+                                                                        <Calendar
+                                                                            mode="single"
+                                                                            selected={field.value}
+                                                                            onSelect={field.onChange}
+                                                                            disabled={(date) =>
+                                                                                date < new Date()
+                                                                            }
+                                                                            captionLayout="dropdown"
+                                                                        />
+                                                                    </PopoverContent>
+                                                                </Popover>
+                                                                <FormMessage />
+                                                            </FormItem>
+                                                        )}
+                                                    />
+                                                </div>
+                                            </div>
+                                            <Button type="submit" className="w-[30%] bg-[#538083] font-semibold">Update Partie</Button>
+                                        </form>
+                                    </Form>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+
+                        {/* More Info Tournament  */}
+                        <Dialog open={ShowMoreInfoDialog} onOpenChange={setShowMoreInfoDialog}>
+                            <DialogContent className='flex flex-col sm:max-w-[50%]'>
+                                <DialogHeader className='text-xl font-semibold'>
+                                    More Information _ {currentRowData.name}
+                                </DialogHeader>
+                                <div className="flex justify-between items-center">
+                                    <div className="w-1/3">
+                                        <img src={partiePic} alt="" className="w-[200px] h-[250px] rounded bg-cover" />
+                                    </div>
+                                    <div className="w-2/3 flex">
+                                        <div className="w-1/3 flex flex-col space-y-2">
+                                            <label className="font-semibold">Name Partie :</label>
+                                            <label className="font-semibold">Title Partie :</label>
+                                            <label className="font-semibold">Date :</label>
+                                            <label className="font-semibold">Description :</label>
+                                        </div>
+                                        <div className="w-2/3 flex flex-col space-y-2">
+                                            <label>Partie 1</label>
+                                            <label>Title</label>
+                                            <label>06 - 08 - 2025</label>
+                                            <label>Description</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </DialogContent>
+                        </Dialog>
+                    </>
                 )
             },
         },
     ];
 
-    
-    const [data, setData] = useState([]);
-    const [sorting, setSorting] = useState([]);
-    const [columnFilters, setColumnFilters] = useState([])
-    const [columnVisibility, setColumnVisibility] = useState({})
-    const [rowSelection, setRowSelection] = useState({})
+
+
 
 
     useEffect(() => {
@@ -185,7 +412,7 @@ const PartiesTable = () => {
 
     return (
         <>
-        <hr className="mt-4 h-2"/>
+            <hr className="mt-4 h-2" />
             <div className="mt-10">
                 <h1 className="text-lg font-medium text-[#333333]">List All Parties</h1>
                 <div>
