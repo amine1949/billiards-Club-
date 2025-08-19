@@ -381,8 +381,6 @@ const PartiesTable = () => {
 
 
 
-
-
     useEffect(() => {
         const fetchData = async () => {
             const fetchedData = await getData();
